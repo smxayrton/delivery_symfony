@@ -6,12 +6,15 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
-
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">SMXRestaurant</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -51,7 +54,7 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col"></th>
+
       <th scope="col">Pizza Name</th>
       <th scope="col"> Small</th>
       <th scope="col"> Medium</th>
@@ -61,76 +64,47 @@
     </tr>
   </thead>
   <tbody>
+    {% set c = 0 %}
+    {% for p in pizza_info.pizza %}
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
+      <td>{{p.name}}</td>
+      <td>${{p.price_sm}}</td>
+      <td>${{p.price_md}}</td>
+      <td>${{p.price_lg}}</td>
+      <td>${{p.price_xl}}</td>
+      <td><button id="add{{c}}" onclick="addOneProductToField('inp{{c}}')" class="btn btn-primary">+</button></td>
+      <td><button id="subtract{{c}}" onclick="subOneProductToField('inp{{c}}')" class="btn btn-danger">-</button></td>
+      <td><input id="inp{{c}}" class="input" type="text" disabled /></td>
+
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>$10</td>
-      <td>$20</td>
-      <td>$30</td>
-      <td>$50</td>
-      <td><a href="#" class="btn btn-primary">+</a></td>
-      <td><a href="#" class="btn btn-danger">-</a></td>
-      <td><input class="input-form" type="text" /></td>
-    </tr>
+    {% set c = c + 1 %}
+    {% endfor %}
+
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+      <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-warning btn-block" onclick="clearAll()"> Clean All </button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-success btn-block" onclick=""> Finished </a>
+        </div>
+      </div>
+      
+      </td>
+
   </tbody>
+  
 </table>
 
 
+<br>
 
 </div>
 
@@ -148,6 +122,39 @@
 
 
 
+<script>
 
+    function addOneProductToField(idField){
+      
+        var v = document.getElementById(idField).value;
+        
+        if(v == ""){
+            v = 0
+        }
+        document.getElementById(idField).value = parseInt(v) + 1
+    
+    }
+    function subOneProductToField(idField){
+
+        var v = document.getElementById(idField).value;
+        console.log(v)
+        if(v == ""){
+            v = 0
+        }
+
+        if((v-1) > 0){
+                document.getElementById(idField).value = parseInt(v) - 1
+        }
+
+        if((v-1) == 0){
+                document.getElementById(idField).value = ""
+        }
+    }
+
+    function clearAll(){
+        console.log("ops")
+        document.getElementsByClassName("input").value = ""
+    }
+</script>
 </body>
 </html>
